@@ -1,0 +1,10 @@
+<ion-header>
+	<ion-title>movie-list</ion-title>
+</ion-header>
+
+<ion-content padding>
+	<button [routerLink]="['/add-movie']">Add Movie</button>
+	<ion-item *ngFor="let movie of movies; index as i" (click)="edit(i)">
+		<app-movie-detail [movie]="movie"> </app-movie-detail>
+	</ion-item>
+</ion-content>

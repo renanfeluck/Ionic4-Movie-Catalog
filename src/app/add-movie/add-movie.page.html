@@ -1,0 +1,62 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-title>add-movie</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<form [formGroup]="addMovieForm" (ngSubmit)="addMovie()">
+		<ion-item>
+			<ion-label position="floating"
+				>Title <ion-text color="danger">*</ion-text></ion-label
+			>
+			<ion-input required formControlName="title" type="text"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label position="floating"
+				>Genre <ion-text color="danger">*</ion-text></ion-label
+			>
+			<ion-input required formControlName="genre" type="text"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label position="floating"
+				>Release Date <ion-text color="danger">*</ion-text></ion-label
+			>
+			<ion-input required formControlName="releaseDate" type="text"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label position="floating"
+				>Main Actors <ion-text color="danger">*</ion-text></ion-label
+			>
+			<ion-input required formControlName="mainActors" type="text"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label position="floating"
+				>Summarized Plot <ion-text color="danger">*</ion-text></ion-label
+			>
+			<ion-input
+				required
+				formControlName="summarizedPlot"
+				type="text"
+			></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label position="floating"
+				>Youtube Trailer <ion-text color="danger">*</ion-text></ion-label
+			>
+			<ion-input
+				required
+				formControlName="youtubeTrailer"
+				type="text"
+			></ion-input>
+		</ion-item>
+		<ion-button
+			block
+			color="primary"
+			type="submit"
+			[disabled]="addMovieForm.invalid"
+		>
+			Add
+		</ion-button>
+	</form>
+</ion-content>
