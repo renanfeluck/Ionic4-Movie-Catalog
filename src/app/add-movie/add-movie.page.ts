@@ -27,9 +27,9 @@ export class AddMoviePage implements OnInit {
 		this.route.queryParams.subscribe(params => {
 			if (params && params.id) {
 				this.editing = true;
-				this.movieStorage.getMovie(params.id).subscribe(movieToEdit => {
+				this.movieStorage.getMovie().subscribe(movieToEdit => {
 					this.editingId = params.id;
-					this.updateFormValues(movieToEdit);
+					this.updateFormValues(movieToEdit[params.id]);
 				});
 			}
 		});

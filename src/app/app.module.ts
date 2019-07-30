@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -19,7 +20,8 @@ import { MovieStorageProvider } from './providers/movie-storage';
 		IonicModule.forRoot(),
 		AppRoutingModule,
 		MovieListPageModule,
-		IonicStorageModule.forRoot()
+		IonicStorageModule.forRoot(),
+		HttpClientModule
 	],
 	providers: [
 		StatusBar,

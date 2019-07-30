@@ -10,26 +10,21 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(cors());
 
-var mysql = require('mysql');
+if (typeof localStorage === 'undefined' || localStorage === null) {
+	var LocalStorage = require('node-localstorage').LocalStorage;
+	localStorage = new LocalStorage('./scratch');
+}
 
-var con = mysql.createConnection({
-	host: 'remotemysql.com',
-	user: 'DLM1k0DlF6',
-	password: 'c6KWUOJ2OM',
-	database: 'DLM1k0DlF6'
+app.post('/post', function(req, res) {
+	console.log('Posting new movie', JSON.stringify(req.body));
+	localStorage.setItem('movies', JSON.stringify(req.body));
+	res.send({ status: 'Okay' });
 });
 
-app.get('/post', function(req, res) {
-	con.connect(function(err) {
-		if (err) throw err;
-		console.log('Connected!');
-		var sql =
-			"INSERT INTO movies (title, genre, releaseDate, mainActors, summarizedPlot, youtubeTrailer) VALUES ('Company Inc', 'Highway 37', '11', '123', '456', '789')";
-		con.query(sql, function(err, result) {
-			if (err) throw err;
-			console.log('1 record inserted');
-		});
-	});
+app.get('/movies', function(req, res) {
+	var movies = localStorage.getItem('movies');
+	console.log('movies', movies);
+	res.send(JSON.parse(movies));
 });
 
 app.listen(process.env.PORT || 8080);

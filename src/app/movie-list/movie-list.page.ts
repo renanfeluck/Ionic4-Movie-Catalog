@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Movie } from '../interface/movie';
 import { MovieStorageProvider } from '../providers/movie-storage';
@@ -9,8 +10,10 @@ import { MovieStorageProvider } from '../providers/movie-storage';
 	templateUrl: './movie-list.page.html',
 	styleUrls: ['./movie-list.page.scss']
 })
-export class MovieListPage implements OnInit {
+export class MovieListPage {
 	movies: Movie[];
+
+	movieListSubscribe: Subscription;
 
 	constructor(
 		public movieStorage: MovieStorageProvider,
@@ -19,32 +22,34 @@ export class MovieListPage implements OnInit {
 
 	ngOnInit(): void {
 		this.movieStorage
-			.initStorage()
+			.initStorageNode()
 			.pipe(take(1))
 			.subscribe(res => {
-				console.log('res', res);
-				this.movies = res;
+				if (res == undefined || res == null) {
+					this.movieStorage.setMovieList(this.movieStorage.mockMovies());
+				} else {
+					this.movieStorage.setMovieList(res);
+				}
 			});
-	}
 
-	ngDoCheck() {
-		this.movieStorage
-			.initStorage()
-			.pipe(take(1))
-			.subscribe(res => {
-				console.log('res', res);
+		this.movieListSubscribe = this.movieStorage.getMovieList().subscribe(
+			res => {
 				this.movies = res;
-			});
+			},
+			err => console.log('MovieLis error', err)
+		);
 	}
 
 	edit(i) {
-		console.log('edit', i);
-
 		let navigationExtras: NavigationExtras = {
 			queryParams: {
 				id: i
 			}
 		};
 		this.router.navigate(['/add-movie'], navigationExtras);
+	}
+
+	ngOnDestroy() {
+		this.movieListSubscribe.unsubscribe();
 	}
 }
