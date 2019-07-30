@@ -6,10 +6,10 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage';
+import { MovieListPageModule } from '../pages/movie-list/movie-list.module';
+import { MovieListPage } from '../pages/movie-list/movie-list.page';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MovieListPageModule } from './movie-list/movie-list.module';
-import { MovieListPage } from './movie-list/movie-list.page';
 import { MovieStorageProvider } from './providers/movie-storage';
 
 @NgModule({

@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { Movie } from '../interface/movie';
-import { MovieStorageProvider } from '../providers/movie-storage';
+import { Movie } from '../../app/interface/movie';
+import { MovieStorageProvider } from '../../app/providers/movie-storage';
 
 @Component({
 	selector: 'app-movie-list',

@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { ComponentsModule } from '../components/components.module';
+import { ComponentsModule } from '../../app/components/components.module';
 import { MovieListPage } from './movie-list.page';
 
 const routes: Routes = [

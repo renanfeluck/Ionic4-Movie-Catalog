@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Movie } from '../interface/movie';
-import { MovieStorageProvider } from '../providers/movie-storage';
-import { MovieService } from '../service/movie.service';
+import { Movie } from '../../app/interface/movie';
+import { MovieStorageProvider } from '../../app/providers/movie-storage';
+import { MovieService } from '../../app/service/movie.service';
 
 @Component({
 	selector: 'app-add-movie',
@@ -121,6 +121,6 @@ export class AddMoviePage implements OnInit {
 	}
 
 	ngOnDestroy() {
-		this.movieSearchSubs.unsubscribe();
+		if (this.movieSearchSubs) this.movieSearchSubs.unsubscribe();
 	}
 }
