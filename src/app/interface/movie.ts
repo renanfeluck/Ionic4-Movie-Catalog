@@ -1,8 +1,8 @@
 export interface Movie {
-	title: String;
-	genre: String;
-	releaseDate: String;
-	mainActors: String;
-	summarizedPlot: String;
+	Title: String;
+	Genre: String;
+	Released: String;
+	Actors: String;
+	Plot: String;
 	youtubeTrailer: String;
 }

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Movie } from '../interface/movie';
 import { MovieStorageProvider } from '../providers/movie-storage';
+import { MovieService } from '../service/movie.service';
 
 @Component({
 	selector: 'app-add-movie',
@@ -13,12 +15,17 @@ export class AddMoviePage implements OnInit {
 	public addMovieForm: FormGroup;
 	private editing = false;
 	private editingId: number;
+	movieTitle: string;
+	searchText = '';
+	movieSearchSubs: Subscription;
+	movie: Movie;
 
 	constructor(
 		public formBuilder: FormBuilder,
 		public movieStorage: MovieStorageProvider,
 		private router: Router,
-		private route: ActivatedRoute
+		private route: ActivatedRoute,
+		private movieService: MovieService
 	) {}
 
 	ngOnInit() {
@@ -35,13 +42,33 @@ export class AddMoviePage implements OnInit {
 		});
 	}
 
+	searchMovie($event) {
+		this.movieSearchSubs = this.movieService
+			.getMovieFromApi($event.target.value)
+			.subscribe(movieRes => {
+				this.movie = <Movie>movieRes;
+				this.movieTitle = movieRes.Title;
+			});
+	}
+
+	autoCompleteByApi() {
+		console.log(this.movie);
+		this.addMovieForm.patchValue({
+			Title: this.movie.Title,
+			Genre: this.movie.Genre,
+			Released: this.movie.Released,
+			Actors: this.movie.Actors,
+			Plot: this.movie.Plot
+		});
+	}
+
 	addMovie() {
 		let movie = {
-			title: this.addMovieForm.value.title,
-			genre: this.addMovieForm.value.genre,
-			releaseDate: this.addMovieForm.value.releaseDate,
-			mainActors: this.addMovieForm.value.mainActors,
-			summarizedPlot: this.addMovieForm.value.summarizedPlot,
+			Title: this.addMovieForm.value.Title,
+			Genre: this.addMovieForm.value.Genre,
+			Released: this.addMovieForm.value.Released,
+			Actors: this.addMovieForm.value.Actors,
+			Plot: this.addMovieForm.value.Plot,
 			youtubeTrailer: this.addMovieForm.value.youtubeTrailer
 		};
 
@@ -59,11 +86,11 @@ export class AddMoviePage implements OnInit {
 	editMovie(i) {
 		console.log('Edit Movie');
 		let movie = {
-			title: this.addMovieForm.value.title,
-			genre: this.addMovieForm.value.genre,
-			releaseDate: this.addMovieForm.value.releaseDate,
-			mainActors: this.addMovieForm.value.mainActors,
-			summarizedPlot: this.addMovieForm.value.summarizedPlot,
+			Title: this.addMovieForm.value.Title,
+			Genre: this.addMovieForm.value.Genre,
+			Released: this.addMovieForm.value.Released,
+			Actors: this.addMovieForm.value.Actors,
+			Plot: this.addMovieForm.value.Plot,
 			youtubeTrailer: this.addMovieForm.value.youtubeTrailer
 		};
 		this.movieStorage.editMovie(i, movie).then(() => {
@@ -73,23 +100,27 @@ export class AddMoviePage implements OnInit {
 
 	initForm() {
 		this.addMovieForm = this.formBuilder.group({
-			title: [''],
-			genre: [''],
-			releaseDate: [''],
-			mainActors: [''],
-			summarizedPlot: [''],
+			Title: [''],
+			Genre: [''],
+			Released: [''],
+			Actors: [''],
+			Plot: [''],
 			youtubeTrailer: ['']
 		});
 	}
 
 	updateFormValues(movie: Movie) {
 		this.addMovieForm = this.formBuilder.group({
-			title: movie.title,
-			genre: movie.genre,
-			releaseDate: movie.releaseDate,
-			mainActors: movie.mainActors,
-			summarizedPlot: movie.summarizedPlot,
+			Title: movie.Title,
+			Genre: movie.Genre,
+			Released: movie.Released,
+			Actors: movie.Actors,
+			Plot: movie.Plot,
 			youtubeTrailer: movie.youtubeTrailer
 		});
+	}
+
+	ngOnDestroy() {
+		this.movieSearchSubs.unsubscribe();
 	}
 }

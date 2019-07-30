@@ -5,40 +5,46 @@
 </ion-header>
 
 <ion-content>
+	<ion-toolbar>
+		<ion-searchbar
+			(ionInput)="searchMovie($event)"
+			placeholder="Search by Movie Title"
+		></ion-searchbar>
+	</ion-toolbar>
+	<ion-list>
+		<ion-item (click)="autoCompleteByApi()">{{ movieTitle }}</ion-item>
+	</ion-list>
+
 	<form [formGroup]="addMovieForm" (ngSubmit)="addMovie()">
 		<ion-item>
 			<ion-label position="floating"
 				>Title <ion-text color="danger">*</ion-text></ion-label
 			>
-			<ion-input required formControlName="title" type="text"></ion-input>
+			<ion-input required formControlName="Title" type="text"></ion-input>
 		</ion-item>
 		<ion-item>
 			<ion-label position="floating"
 				>Genre <ion-text color="danger">*</ion-text></ion-label
 			>
-			<ion-input required formControlName="genre" type="text"></ion-input>
+			<ion-input required formControlName="Genre" type="text"></ion-input>
 		</ion-item>
 		<ion-item>
 			<ion-label position="floating"
 				>Release Date <ion-text color="danger">*</ion-text></ion-label
 			>
-			<ion-input required formControlName="releaseDate" type="text"></ion-input>
+			<ion-input required formControlName="Released" type="text"></ion-input>
 		</ion-item>
 		<ion-item>
 			<ion-label position="floating"
 				>Main Actors <ion-text color="danger">*</ion-text></ion-label
 			>
-			<ion-input required formControlName="mainActors" type="text"></ion-input>
+			<ion-input required formControlName="Actors" type="text"></ion-input>
 		</ion-item>
 		<ion-item>
 			<ion-label position="floating"
 				>Summarized Plot <ion-text color="danger">*</ion-text></ion-label
 			>
-			<ion-input
-				required
-				formControlName="summarizedPlot"
-				type="text"
-			></ion-input>
+			<ion-input required formControlName="Plot" type="text"></ion-input>
 		</ion-item>
 		<ion-item>
 			<ion-label position="floating"

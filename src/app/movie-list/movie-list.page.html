@@ -3,7 +3,7 @@
 </ion-header>
 
 <ion-content padding>
-	<button [routerLink]="['/add-movie']">Add Movie</button>
+	<ion-button [routerLink]="['/add-movie']">Add Movie</ion-button>
 	<ion-item *ngFor="let movie of movies; index as i" (click)="edit(i)">
 		<app-movie-detail [movie]="movie"> </app-movie-detail>
 	</ion-item>

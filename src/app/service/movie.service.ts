@@ -16,4 +16,8 @@ export class MovieService {
 	getStorage(): Observable<any> {
 		return this.http.get('http://localhost:8080/movies');
 	}
+
+	getMovieFromApi(search: string): Observable<any> {
+		return this.http.get('http://www.omdbapi.com/?apikey=2c6ee75c&t=' + search);
+	}
 }

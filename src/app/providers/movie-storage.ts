@@ -44,21 +44,20 @@ export class MovieStorageProvider {
 		console.log('Mock');
 		let movieList: Movie[] = [
 			{
-				title: 'The Shawshank Redemption',
-				genre: 'Drama',
-				releaseDate: '1994',
-				mainActors: 'Tim Robbins, Morgan Freeman, Bob Gunton, William Sadler',
-				summarizedPlot:
+				Title: 'The Shawshank Redemption',
+				Genre: 'Drama',
+				Released: '1994',
+				Actors: 'Tim Robbins, Morgan Freeman, Bob Gunton, William Sadler',
+				Plot:
 					'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
 				youtubeTrailer: 'http://youtube.com'
 			},
 			{
-				title: 'Blade Runner',
-				genre: 'Sci-Fi, Thriller',
-				releaseDate: '1982',
-				mainActors:
-					'Harrison Ford, Rutger Hauer, Sean Young, Edward James Olmos',
-				summarizedPlot:
+				Title: 'Blade Runner',
+				Genre: 'Sci-Fi, Thriller',
+				Released: '1982',
+				Actors: 'Harrison Ford, Rutger Hauer, Sean Young, Edward James Olmos',
+				Plot:
 					'A blade runner must pursue and terminate four replicants who stole a ship in space, and have returned to Earth to find their creator.',
 				youtubeTrailer: 'http://youtube.com'
 			}
@@ -81,72 +80,50 @@ export class MovieStorageProvider {
 
 	addMovie(movie: Movie): Promise<any> {
 		return new Promise((resolve, reject) => {
-			this.storage
-				.get('movies')
-				.then(resMovies => {
-					let movieList: Movie[] = resMovies;
-					movieList.push(movie);
-
-					this.movieService.setStorage(movieList).subscribe(
-						res => {
-							console.log('MovieService', res);
-							this.setMovieList(movieList);
-						},
-						err => {
-							console.log(err);
-						}
-					);
-
-					this.storage
-						.set('movies', movieList)
-						.then(res => {
-							resolve();
-						})
-						.catch(err => reject());
-				})
-				.catch(err => reject());
+			this.movieService.getStorage().subscribe(resMovies => {
+				let movieList: Movie[] = resMovies;
+				movieList.push(movie);
+				this.movieService.setStorage(movieList).subscribe(
+					res => {
+						console.log('MovieService', res);
+						this.setMovieList(movieList);
+						resolve();
+					},
+					err => {
+						console.log(err);
+						reject();
+					}
+				);
+			});
 		});
 	}
 
 	editMovie(movieId, newMovie) {
 		return new Promise((resolve, reject) => {
-			this.storage
-				.get('movies')
-				.then(resMovies => {
-					let movieList: Movie[] = resMovies;
-					movieList[movieId] = newMovie;
+			this.movieService.getStorage().subscribe(resMovies => {
+				let movieList: Movie[] = resMovies;
+				movieList[movieId] = newMovie;
 
-					this.movieService
-						.setStorage(movieList)
-						.pipe(take(1))
-						.subscribe(
-							res => {
-								console.log('MovieService', res);
-								this.setMovieList(movieList);
-							},
-							err => {
-								console.log('Movie list', movieList);
-								console.log('Edit Movie error', err);
-							}
-						);
-
-					this.storage
-						.set('movies', movieList)
-						.then(() => {
+				this.movieService
+					.setStorage(movieList)
+					.pipe(take(1))
+					.subscribe(
+						res => {
+							console.log('MovieService', res);
+							this.setMovieList(movieList);
 							resolve();
-						})
-						.catch(err => reject(err));
-				})
-				.catch(err => reject(err));
+						},
+						err => {
+							console.log('Movie list', movieList);
+							console.log('Edit Movie error', err);
+							reject();
+						}
+					);
+			});
 		});
 	}
 
 	getMovie() {
 		return this.movieService.getStorage();
-		// return from(
-		// 	this.storage.get('movies').then(resMovies => {
-		// 		return resMovies[id];
-		// 	})
-		// );
 	}
 }
